@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.plannet.ewi.anyline_meter_reading">
+    package="com.plannet.ewi.anyline_meter_reading">
+
+    <application>
+        <activity android:name=".ScanActivity"></activity>
+    </application>
+
 </manifest>
