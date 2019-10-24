@@ -3,7 +3,7 @@
     package="com.plannet.ewi.anyline_meter_reading">
 
     <application>
-        <activity android:name=".ScanActivity"></activity>
+        <activity android:name=".ScanActivity" android:theme="@style/Theme.AppCompat"></activity>
     </application>
 
 </manifest>

@@ -23,7 +23,9 @@ public class AnylineMeterReadingPlugin implements MethodCallHandler, PluginRegis
      */
     public static void registerWith(Registrar registrar) {
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "anyline_meter_reading");
-        channel.setMethodCallHandler(new AnylineMeterReadingPlugin(registrar.activity()));
+        final AnylineMeterReadingPlugin instance = new AnylineMeterReadingPlugin(registrar.activity());
+        registrar.addActivityResultListener(instance);
+        channel.setMethodCallHandler(instance);
     }
 
     private AnylineMeterReadingPlugin(Activity activity) {
@@ -36,10 +38,14 @@ public class AnylineMeterReadingPlugin implements MethodCallHandler, PluginRegis
         switch (call.method) {
             case Constants.METHOD_SET_LICENSE_KEY:
                 this.licenseKey = call.argument(Constants.KEY_LICENSE_KEY);
+                result.success("");
+                break;
             case Constants.METHOD_GET_METER_VALUE:
                 startScanActivity(activity);
+                break;
             default:
                 result.notImplemented();
+                break;
         }
     }
 
@@ -49,11 +55,11 @@ public class AnylineMeterReadingPlugin implements MethodCallHandler, PluginRegis
             if (i1 == Constants.RESULT_SUCCESS) {
                 result.success(intent.getStringExtra(Constants.KEY_METER_VALUE));
                 return true;
-            } else if (i1 == Constants.RESULT_DEFAULT_ERROR) {
-                result.error(String.valueOf(Constants.RESULT_DEFAULT_ERROR), intent.getStringExtra(Constants.KEY_EXCEPTION), null);
+            } else if (i1 == Constants.RESULT_ERROR_DEFAULT) {
+                result.error(String.valueOf(Constants.RESULT_ERROR_DEFAULT), intent.getStringExtra(Constants.KEY_EXCEPTION), null);
                 return true;
-            } else if (i1 == Constants.RESULT_CAMERA_PERMISSION_ERROR) {
-                result.error(String.valueOf(Constants.RESULT_CAMERA_PERMISSION_ERROR), null, null);
+            } else if (i1 == Constants.RESULT_ERROR_CAMERA_PERMISSION) {
+                result.error(String.valueOf(Constants.RESULT_ERROR_CAMERA_PERMISSION), null, null);
                 return true;
             }
         }

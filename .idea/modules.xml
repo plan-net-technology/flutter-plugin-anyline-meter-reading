@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/anyline_meter_reading.iml" filepath="$PROJECT_DIR$/anyline_meter_reading.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/anyline-meter-reading.iml" filepath="$PROJECT_DIR$/.idea/anyline-meter-reading.iml" />
     </modules>
   </component>
 </project>

@@ -3,6 +3,7 @@ package com.plannet.ewi.anyline_meter_reading;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -21,15 +22,13 @@ import io.anyline.view.ScanViewPluginConfig;
 
 public class ScanActivity extends AppCompatActivity implements CameraOpenListener {
     private String licenseKey;
-    private ScanView scanView;
+    protected ScanView scanView;
     private static final int cameraPermissionRequestCode = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         extractLicenseKey();
-        setContentView(R.layout.activity_scan);
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, cameraPermissionRequestCode);
@@ -53,14 +52,18 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
     @Override
     protected void onResume() {
         super.onResume();
-        scanView.start();
+        if (scanView != null) {
+            scanView.start();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        scanView.stop();
-        scanView.releaseCameraInBackground();
+        if (scanView != null) {
+            scanView.stop();
+            scanView.releaseCameraInBackground();
+        }
     }
 
     @Override
@@ -80,6 +83,8 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
     }
 
     private void setupScanView() {
+        setContentView(R.layout.activity_scan);
+
         scanView = findViewById(R.id.scan_view);
         scanView.setCameraOpenListener(this);
 
@@ -92,6 +97,8 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
         scanViewPlugin.addScanResultListener((ScanResultListener<MeterScanResult>) this::handleScanResult);
 
         ((MeterScanViewPlugin) scanView.getScanViewPlugin()).setScanMode(MeterScanMode.AUTO_ANALOG_DIGITAL_METER);
+
+        scanView.start();
     }
 
     private void handleScanResult(MeterScanResult meterScanResult) {
@@ -106,14 +113,14 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
 
     private void handleDefaultError(Exception e) {
         setResult(
-                Constants.RESULT_DEFAULT_ERROR,
+                Constants.RESULT_ERROR_DEFAULT,
                 new Intent().putExtra(Constants.KEY_EXCEPTION, e.toString())
         );
-        finishActivity(Constants.SCAN_ACTIVITY_REQUEST_CODE);
+        finish();
     }
 
     private void handleCameraPermissionError() {
-        setResult(Constants.RESULT_CAMERA_PERMISSION_ERROR);
-        finishActivity(Constants.SCAN_ACTIVITY_REQUEST_CODE);
+        setResult(Constants.RESULT_ERROR_CAMERA_PERMISSION);
+        finish();
     }
 }

@@ -19,12 +19,12 @@ class AnylineMeterReading {
   AnylineMeterReading._internal();
 
   Future<String> getMeterValue() async {
-    return await _channel.invokeMethod("getMeterValue");
+    return await _channel.invokeMethod("METHOD_GET_METER_VALUE");
   }
 
   _setLicenseKey(String licenseKey) async {
-    return await _channel.invokeMethod("setLicenseKey", {
-      "licenseKey": licenseKey
+    return await _channel.invokeMethod("METHOD_SET_LICENSE_KEY", {
+      "KEY_LICENSE_KEY": licenseKey
     });
   }
 }

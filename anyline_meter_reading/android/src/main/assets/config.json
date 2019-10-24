@@ -1,0 +1,34 @@
+{
+  "camera":{
+    "captureResolution" : "720p"
+  },
+  "flash" : {
+    "mode": "manual",
+    "alignment": "bottom_right"
+  },
+  "viewPlugin" : {
+    "cutoutConfig" : {
+      "style" : "rect",
+      "alignment" : "top",
+      "strokeWidth" : 2,
+      "strokeColor" : "FFFFFF",
+      "cornerRadius" : 4,
+      "outerColor" : "000000",
+      "outerAlpha" : 0.5,
+      "feedbackStrokeColor" : "0099FF",
+      "offset": {
+        "x": 0,
+        "y": 120
+      }
+    },
+    "scanFeedback" : {
+      "style" : "CONTOUR_RECT",
+      "strokeColor" : "0099FF",
+      "fillColor" : "220099FF",
+      "blinkOnResult": true,
+      "beepOnResult": true,
+      "vibrateOnResult": true
+    },
+    "cancelOnResult" : false
+  }
+}
