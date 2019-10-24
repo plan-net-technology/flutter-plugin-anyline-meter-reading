@@ -1,17 +1,21 @@
-Integration
+**Integration**
     - TBD
 
-For Android:
+**For Android:**
     - add the following permissions to android/app/src/main/AndroidManifest.xml:
-            <uses-permission android:name="android.permission.CAMERA" />
+            ```
+<uses-permission android:name="android.permission.CAMERA" />
             <uses-permission android:name="android.hardware.camera.autofocus" />
             <uses-permission android:name="android.permission.VIBRATE"/>
             <uses-permission android:name="android.permission.BLUETOOTH"/>
+```
+
             
-For iOS:
+**For iOS:**
     - TBD
     
-Usage example:
+**Usage example:**
+```
     try {
       final AnylineMeterReading anylineMeterReading = await AnylineMeterReading.createInstance(YOUR_LICENSE_KEY);
       final String meterValue = await anylineMeterReading.getMeterValue();
@@ -21,3 +25,4 @@ Usage example:
       //    - AnylineMeterReadingException (default exception, message is optional)
       //    - AnylineMeterReadingNoCameraPermissionException
     }
+```
