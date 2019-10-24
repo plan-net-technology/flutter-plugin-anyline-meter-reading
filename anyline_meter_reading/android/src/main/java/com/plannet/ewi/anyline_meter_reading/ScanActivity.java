@@ -3,7 +3,6 @@ package com.plannet.ewi.anyline_meter_reading;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -113,14 +112,14 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
 
     private void handleDefaultError(Exception e) {
         setResult(
-                Constants.RESULT_ERROR_DEFAULT,
+                Constants.RESULT_EXCEPTION_DEFAULT,
                 new Intent().putExtra(Constants.KEY_EXCEPTION, e.toString())
         );
         finish();
     }
 
     private void handleCameraPermissionError() {
-        setResult(Constants.RESULT_ERROR_CAMERA_PERMISSION);
+        setResult(Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION);
         finish();
     }
 }

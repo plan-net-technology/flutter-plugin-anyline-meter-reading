@@ -55,11 +55,11 @@ public class AnylineMeterReadingPlugin implements MethodCallHandler, PluginRegis
             if (i1 == Constants.RESULT_SUCCESS) {
                 result.success(intent.getStringExtra(Constants.KEY_METER_VALUE));
                 return true;
-            } else if (i1 == Constants.RESULT_ERROR_DEFAULT) {
-                result.error(String.valueOf(Constants.RESULT_ERROR_DEFAULT), intent.getStringExtra(Constants.KEY_EXCEPTION), null);
+            } else if (i1 == Constants.RESULT_EXCEPTION_DEFAULT) {
+                result.error(String.valueOf(Constants.RESULT_EXCEPTION_DEFAULT), intent.getStringExtra(Constants.KEY_EXCEPTION), null);
                 return true;
-            } else if (i1 == Constants.RESULT_ERROR_CAMERA_PERMISSION) {
-                result.error(String.valueOf(Constants.RESULT_ERROR_CAMERA_PERMISSION), null, null);
+            } else if (i1 == Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION) {
+                result.error(String.valueOf(Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION), null, null);
                 return true;
             }
         }
