@@ -3,13 +3,12 @@
 
 **For Android:**
     - add the following permissions to android/app/src/main/AndroidManifest.xml:
-            ```
-<uses-permission android:name="android.permission.CAMERA" />
-            <uses-permission android:name="android.hardware.camera.autofocus" />
-            <uses-permission android:name="android.permission.VIBRATE"/>
-            <uses-permission android:name="android.permission.BLUETOOTH"/>
 ```
-
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.hardware.camera.autofocus" />
+<uses-permission android:name="android.permission.VIBRATE"/>
+<uses-permission android:name="android.permission.BLUETOOTH"/>
+```
             
 **For iOS:**
     - TBD
