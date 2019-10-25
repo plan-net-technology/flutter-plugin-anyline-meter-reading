@@ -4,7 +4,8 @@
 
 ```
 anyline_meter_reading:
-    git: https://gitlab.plan-net.com/pnt/anyline-meter-reading.git
+    git: 
+        url: https://gitlab.plan-net.com/pnt/anyline-meter-reading.git
 ```
 
 **For Android**
