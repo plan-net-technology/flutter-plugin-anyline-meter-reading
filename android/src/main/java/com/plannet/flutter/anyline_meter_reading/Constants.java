@@ -1,4 +1,4 @@
-package com.plannet.ewi.anyline_meter_reading;
+package com.plannet.flutter.anyline_meter_reading;
 
 public class Constants {
     static final String METHOD_SET_LICENSE_KEY = "METHOD_SET_LICENSE_KEY";
@@ -16,3 +16,4 @@ public class Constants {
 
     static final String CONFIG_FILE_NAME = "config.json";
 }
+
