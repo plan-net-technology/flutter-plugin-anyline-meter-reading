@@ -10,7 +10,7 @@ anyline_meter_reading:
 
 **For Android**
 
-- add the following permissions to android/app/src/main/AndroidManifest.xml:
+- add the following permissions to **android/app/src/main/AndroidManifest.xml**
 
 ```
 <uses-permission android:name="android.permission.CAMERA" />
@@ -18,7 +18,7 @@ anyline_meter_reading:
 <uses-permission android:name="android.permission.VIBRATE"/>
 <uses-permission android:name="android.permission.BLUETOOTH"/>
 ```
-- add packaging options to android/app/build.gradle
+- add packaging options to **android/app/build.gradle**
 
 ```
 android {
@@ -33,7 +33,7 @@ android {
             
 **For iOS:**
     
-- add camera permission to your ios/Runner/Info.plist
+- add camera permission to your **ios/Runner/Info.plist**
 
 ```
     <key>NSCameraUsageDescription</key>
