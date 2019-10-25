@@ -11,7 +11,11 @@
 ```
             
 **For iOS:**
-    - TBD
+    - add camera permission to your ios/Runner/Info.plist
+```
+	<key>NSCameraUsageDescription</key>
+	<string>YOUR-USAGE-DESCRIPTION</string>
+```
     
 **Usage example:**
 ```
