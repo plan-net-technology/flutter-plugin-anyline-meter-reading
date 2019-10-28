@@ -48,15 +48,15 @@ public class AnylineMeterReadingPlugin implements MethodCallHandler, PluginRegis
   }
 
   @Override
-  public boolean onActivityResult(int i, int i1, Intent intent) {
-    if (i == Constants.SCAN_ACTIVITY_REQUEST_CODE) {
-      if (i1 == Constants.RESULT_SUCCESS) {
-        result.success(intent.getStringExtra(Constants.KEY_METER_VALUE));
+  public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == Constants.SCAN_ACTIVITY_REQUEST_CODE) {
+      if (resultCode == Constants.RESULT_SUCCESS) {
+        result.success(data.getStringExtra(Constants.KEY_METER_VALUE));
         return true;
-      } else if (i1 == Constants.RESULT_EXCEPTION_DEFAULT) {
-        result.error(String.valueOf(Constants.RESULT_EXCEPTION_DEFAULT), intent.getStringExtra(Constants.KEY_EXCEPTION), null);
+      } else if (resultCode == Constants.RESULT_EXCEPTION_DEFAULT) {
+        result.error(String.valueOf(Constants.RESULT_EXCEPTION_DEFAULT), data.getStringExtra(Constants.KEY_EXCEPTION), null);
         return true;
-      } else if (i1 == Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION) {
+      } else if (resultCode == Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION) {
         result.error(String.valueOf(Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION), null, null);
         return true;
       }

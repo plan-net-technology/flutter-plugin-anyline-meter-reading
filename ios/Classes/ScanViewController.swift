@@ -11,12 +11,15 @@ import Anyline
 import Flutter
 
 class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
+    // MARK: - Properties
+    
     var meterScanViewPlugin : ALMeterScanViewPlugin!
     var meterScanPlugin : ALMeterScanPlugin!
     var scanView : ALScanView!
-    
     var licenseKey: String!
     var result: FlutterResult!
+    
+    // MARK: - Init
     
     static func createInstance(result: @escaping FlutterResult, licenseKey: String) -> ScanViewController? {
         let vc = ScanViewController()
@@ -24,6 +27,8 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
         vc.licenseKey = licenseKey
         return vc
     }
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,9 +64,13 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
         }
     }
     
+    // MARK: - Public
+    
     func anylineMeterScanPlugin(_ anylineMeterScanPlugin: ALMeterScanPlugin, didFind scanResult: ALMeterResult) {
         handleScanResult(meterValue: String(scanResult.result))
     }
+    
+    // MARK: - Private
     
     private func startScanning() {
         do {
@@ -111,8 +120,8 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
     }
     
     private func handleCameraPermissionError() {
-           dismiss(animated: true) {
-               self.result(FlutterError(code: Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION, message: nil, details: nil))
-           }
+        dismiss(animated: true) {
+            self.result(FlutterError(code: Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION, message: nil, details: nil))
+        }
     }
 }

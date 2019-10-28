@@ -13,7 +13,6 @@ struct Constants {
 
     static let KEY_LICENSE_KEY = "KEY_LICENSE_KEY"
 
-    static let RESULT_SUCCESS = "100"
     static let RESULT_EXCEPTION_DEFAULT = "101"
     static let RESULT_EXCEPTION_NO_CAMERA_PERMISSION = "102"
 }
