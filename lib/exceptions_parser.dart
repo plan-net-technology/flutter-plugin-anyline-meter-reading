@@ -1,5 +1,6 @@
-import 'package:anyline_meter_reading/constants.dart';
 import 'package:flutter/services.dart';
+
+import 'constants.dart';
 import 'exceptions.dart';
 
 abstract class AnylineMeterReadingExceptionParserType {

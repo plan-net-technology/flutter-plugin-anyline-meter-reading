@@ -1,20 +1,43 @@
 **Integration**
-    - TBD
 
-**For Android:**
-    - add the following permissions to android/app/src/main/AndroidManifest.xml:
+- add anyline_meter_reading plugin to **pubspec.yaml**
+
+```
+anyline_meter_reading:
+    git: 
+        url: https://gitlab.plan-net.com/pnt/anyline-meter-reading.git
+```
+
+**For Android**
+
+- add the following permissions to **android/app/src/main/AndroidManifest.xml**
+
 ```
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-permission android:name="android.hardware.camera.autofocus" />
 <uses-permission android:name="android.permission.VIBRATE"/>
 <uses-permission android:name="android.permission.BLUETOOTH"/>
 ```
+- add packaging options to **android/app/build.gradle**
+
+```
+android {
+    packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+    }
+}
+```
             
 **For iOS:**
-    - add camera permission to your ios/Runner/Info.plist
+    
+- add camera permission to your **ios/Runner/Info.plist**
+
 ```
-	<key>NSCameraUsageDescription</key>
-	<string>YOUR-USAGE-DESCRIPTION</string>
+    <key>NSCameraUsageDescription</key>
+    <string>YOUR-USAGE-DESCRIPTION</string>
 ```
     
 **Usage example:**

@@ -1,4 +1,4 @@
-package com.plannet.ewi.anyline_meter_reading_example;
+package com.plannet.flutter.anyline_meter_reading_example;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

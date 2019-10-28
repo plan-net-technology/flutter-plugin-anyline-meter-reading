@@ -1,16 +1,13 @@
 import 'dart:async';
-import 'package:anyline_meter_reading/exceptions.dart';
+
 import 'package:flutter/services.dart';
+
 import 'constants.dart';
+import 'exceptions.dart';
 import 'exceptions_parser.dart';
 
 class AnylineMeterReading {
   static const MethodChannel _channel = const MethodChannel('anyline_meter_reading');
-
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
 
   static Future<AnylineMeterReading> createInstance(String licenseKey) async {
     final AnylineMeterReading anylineMeterReading = AnylineMeterReading._internal();
