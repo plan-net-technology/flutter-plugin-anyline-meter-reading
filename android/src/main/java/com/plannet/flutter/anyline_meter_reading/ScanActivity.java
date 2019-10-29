@@ -67,6 +67,17 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
     }
 
     @Override
+    public void onBackPressed() {
+        setResult(
+                Constants.RESULT_SUCCESS,
+                new Intent().putExtra(
+                        Constants.KEY_METER_VALUE, ""
+                )
+        );
+        finish();
+    }
+
+    @Override
     public void onCameraOpened(final CameraController cameraController, int width, int height) {
     }
 
