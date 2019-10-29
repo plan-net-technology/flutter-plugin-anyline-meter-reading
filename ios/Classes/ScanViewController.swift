@@ -73,22 +73,23 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
     // MARK: - Private
     
     private func startScanning() {
-        do {
-            self.meterScanPlugin = try ALMeterScanPlugin.init(
-                pluginID: "ENERGY",
-                licenseKey: licenseKey,
-                delegate: self)
-            try self.meterScanPlugin.setScanMode(ALScanMode.autoAnalogDigitalMeter)
-            
-            self.meterScanViewPlugin = ALMeterScanViewPlugin.init(scanPlugin: self.meterScanPlugin)
-            self.scanView = ALScanView.init(frame: self.view.bounds, scanViewPlugin: self.meterScanViewPlugin)
-        } catch {
-            handleError(error: error)
+        DispatchQueue.main.async {
+            do {
+                self.meterScanPlugin = try ALMeterScanPlugin.init(
+                    pluginID: "ENERGY",
+                    licenseKey: self.licenseKey,
+                    delegate: self)
+                try self.meterScanPlugin.setScanMode(ALScanMode.autoAnalogDigitalMeter)
+                
+                self.meterScanViewPlugin = ALMeterScanViewPlugin.init(scanPlugin: self.meterScanPlugin)
+                self.scanView = ALScanView.init(frame: self.view.bounds, scanViewPlugin: self.meterScanViewPlugin)
+                self.view.addSubview(self.scanView)
+                self.addOkButton()
+                self.scanView.startCamera()
+            } catch {
+                self.handleError(error: error)
+            }
         }
-        
-        self.view.addSubview(self.scanView)
-        self.addOkButton()
-        self.scanView.startCamera()
     }
     
     private func addOkButton() {
