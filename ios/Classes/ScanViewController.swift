@@ -121,8 +121,10 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
     }
     
     private func handleCameraPermissionError() {
-        dismiss(animated: true) {
-            self.result(FlutterError(code: Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION, message: nil, details: nil))
-        }
+		DispatchQueue.main.async {
+			self.dismiss(animated: true) {
+				self.result(FlutterError(code: Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION, message: nil, details: nil))
+			}
+		}
     }
 }
