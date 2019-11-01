@@ -34,6 +34,7 @@ public class SwiftAnylineMeterReadingPlugin: NSObject, FlutterPlugin {
                 result(FlutterMethodNotImplemented)
                 return
         }
+        vc.modalPresentationStyle = .fullScreen
         UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
     }
 }
