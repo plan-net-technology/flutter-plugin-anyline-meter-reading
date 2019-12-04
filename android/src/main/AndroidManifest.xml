@@ -3,7 +3,7 @@
     package="com.plannet.flutter.anyline_meter_reading">
 
     <application>
-        <activity android:name=".ScanActivity" android:theme="@style/Theme.AppCompat"></activity>
+        <activity android:name=".ScanActivity" android:screenOrientation="portrait" android:theme="@style/Theme.AppCompat"></activity>
     </application>
 
 </manifest>
