@@ -1,6 +1,6 @@
 # Flutter Anyline Meter Reading Plugin
 This plugin allows to use the Anyline meter reading functionality whithin a Flutter project.
-The plugin uses natively the iOS and Android Anyline SDKs (more info on the Anyline SDKs can be found here: https://documentation.anyline.com).
+The plugin uses natively the iOS and Android Anyline SDKs (more info on the Anyline SDKs can be found [here](https://documentation.anyline.com)).
 
 **Requirements:**
 * Flutter version 1.12.13+hotfix.5
