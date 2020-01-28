@@ -1,14 +1,13 @@
 # Flutter Anyline plugin
-This is developed for the EWI Flutter project.
-The plugin will be used whithin the Flutter Dart code so that at some point the app 
-can get meter values from the device camera feed.
+This plugin allows to use the Anyline meter reading functionality whithin a Flutter project.
+The plugin uses natively the iOS and Android Anyline SDKs (more info on the Anyline SDKs can be found here: https://documentation.anyline.com).
 
 Requirements:
-* Flutter version 1.9.1+hotfix.5
-* Dart version 2.5.0
-* Android Studio 3.5.1 (Build #AI-191.8026.42.35.5900203)
-* Xcode 11+
-* CocoaPods 1.8.3+
+* Flutter version 1.12.13+hotfix.5
+* Dart version 2.7.0
+* Android Studio 3.5.3 (Build #AI-191.8026.42.35.6010548, built on November 15, 2019)
+* Xcode Version 11.3.1 (11C504)
+* CocoaPods 1.8.1+
 
 
 **Integration**
@@ -18,7 +17,7 @@ Requirements:
 ```
 anyline_meter_reading:
     git: 
-        url: https://gitlab.plan-net.com/pnt/anyline-meter-reading.git
+        url: https://github.com/plan-net-technology/flutter-plugin-anyline-meter-reading
 ```
 
 **For Android**
