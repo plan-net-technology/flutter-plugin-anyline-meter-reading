@@ -64,3 +64,11 @@ android {
       //    - AnylineMeterReadingNoCameraPermissionException
     }
 ```
+
+## Authors
+
+r.constantinescu@plan-net.com, g.dusa@plan-net.com
+
+## License
+
+This plugin is available under the MIT license. See the [License](https://github.com/plan-net-technology/flutter-plugin-anyline-meter-reading/blob/develop/LICENSE) file for more info.
