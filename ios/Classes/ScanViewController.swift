@@ -32,29 +32,10 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.black
-        if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
-            startScanning()
-        } else {
-            AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
-                if granted {
-                    self.startScanning()
-                } else {
-                    self.handleCameraPermissionError()
-                }
-            })
-        }
+        setupUI()
+        setupScanning()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        do {
-            try self.meterScanViewPlugin?.start()
-        } catch {
-            handleError(error: error)
-        }
-    }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         do {
@@ -63,15 +44,35 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
             handleError(error: error)
         }
     }
-    
+
     // MARK: - Public
-    
+
     func anylineMeterScanPlugin(_ anylineMeterScanPlugin: ALMeterScanPlugin, didFind scanResult: ALMeterResult) {
         handleScanResult(meterValue: String(scanResult.result))
     }
-    
+
     // MARK: - Private
-    
+
+	private func setupUI() {
+		view.backgroundColor = UIColor.black
+	}
+
+	private func setupScanning() {
+		DispatchQueue.main.async {
+			if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+				self.startScanning()
+			} else {
+				AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+					if granted {
+						self.startScanning()
+					} else {
+						self.handleCameraPermissionError()
+					}
+				})
+			}
+		}
+	}
+
     private func startScanning() {
         DispatchQueue.main.async {
             do {
@@ -80,12 +81,13 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
                     licenseKey: self.licenseKey,
                     delegate: self)
                 try self.meterScanPlugin.setScanMode(ALScanMode.autoAnalogDigitalMeter)
-                
+
                 self.meterScanViewPlugin = ALMeterScanViewPlugin.init(scanPlugin: self.meterScanPlugin)
                 self.scanView = ALScanView.init(frame: self.view.bounds, scanViewPlugin: self.meterScanViewPlugin)
                 self.view.addSubview(self.scanView)
                 self.addOkButton()
                 self.scanView.startCamera()
+				try self.meterScanViewPlugin.start()
             } catch {
                 self.handleError(error: error)
             }
