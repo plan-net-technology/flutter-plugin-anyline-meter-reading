@@ -32,30 +32,20 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.black
-        if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
-            startScanning()
-        } else {
-            AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
-                if granted {
-                    self.startScanning()
-                } else {
-                    self.handleCameraPermissionError()
-                }
-            })
-        }
+        setupUI()
+        checkCameraPermissions()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        do {
-            try self.meterScanViewPlugin?.start()
-        } catch {
-            handleError(error: error)
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		do {
+			try self.meterScanViewPlugin?.start()
+		} catch {
+			handleError(error: error)
+		}
+	}
+	
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         do {
             try self.meterScanViewPlugin?.stop()
@@ -72,6 +62,26 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
     
     // MARK: - Private
     
+	private func setupUI() {
+		view.backgroundColor = UIColor.black
+	}
+	
+	private func checkCameraPermissions() {
+		DispatchQueue.main.async {
+			if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
+				self.startScanning()
+			} else {
+				AVCaptureDevice.requestAccess(for: .video, completionHandler: { (granted: Bool) in
+					if granted {
+						self.startScanning()
+					} else {
+						self.handleCameraPermissionError()
+					}
+				})
+			}
+		}
+	}
+	
     private func startScanning() {
         DispatchQueue.main.async {
             do {
@@ -86,6 +96,7 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
                 self.view.addSubview(self.scanView)
                 self.addOkButton()
                 self.scanView.startCamera()
+				try self.meterScanViewPlugin.start()
             } catch {
                 self.handleError(error: error)
             }
