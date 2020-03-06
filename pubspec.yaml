@@ -1,6 +1,6 @@
 name: anyline_meter_reading
-description: A new Flutter plugin.
-version: 0.0.1
+description: Flutter plugin for Anyline meter reading.
+version: 1.0.0
 author:
 homepage:
 
