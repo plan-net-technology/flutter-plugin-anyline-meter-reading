@@ -33,10 +33,19 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupScanning()
+        checkCameraPermissions()
     }
-
-    override func viewWillDisappear(_ animated: Bool) {
+    
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		do {
+			try self.meterScanViewPlugin?.start()
+		} catch {
+			handleError(error: error)
+		}
+	}
+	
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         do {
             try self.meterScanViewPlugin?.stop()
@@ -44,20 +53,20 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
             handleError(error: error)
         }
     }
-
+    
     // MARK: - Public
-
+    
     func anylineMeterScanPlugin(_ anylineMeterScanPlugin: ALMeterScanPlugin, didFind scanResult: ALMeterResult) {
         handleScanResult(meterValue: String(scanResult.result))
     }
-
+    
     // MARK: - Private
-
+    
 	private func setupUI() {
 		view.backgroundColor = UIColor.black
 	}
-
-	private func setupScanning() {
+	
+	private func checkCameraPermissions() {
 		DispatchQueue.main.async {
 			if AVCaptureDevice.authorizationStatus(for: .video) == .authorized {
 				self.startScanning()
@@ -72,7 +81,7 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
 			}
 		}
 	}
-
+	
     private func startScanning() {
         DispatchQueue.main.async {
             do {
@@ -81,7 +90,7 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
                     licenseKey: self.licenseKey,
                     delegate: self)
                 try self.meterScanPlugin.setScanMode(ALScanMode.autoAnalogDigitalMeter)
-
+                
                 self.meterScanViewPlugin = ALMeterScanViewPlugin.init(scanPlugin: self.meterScanPlugin)
                 self.scanView = ALScanView.init(frame: self.view.bounds, scanViewPlugin: self.meterScanViewPlugin)
                 self.view.addSubview(self.scanView)
