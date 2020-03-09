@@ -87,8 +87,8 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
                 self.scanView = ALScanView.init(frame: self.view.bounds, scanViewPlugin: self.meterScanViewPlugin)
                 self.view.addSubview(self.scanView)
                 self.addOkButton()
-				self.startAnylineScanning()
                 self.scanView.startCamera()
+				self.startAnylineScanning()
             } catch {
                 self.handleError(error: error)
             }
