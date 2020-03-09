@@ -39,6 +39,7 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		do {
+			try self.meterScanViewPlugin?.stop()
 			try self.meterScanViewPlugin?.start()
 		} catch {
 			handleError(error: error)
