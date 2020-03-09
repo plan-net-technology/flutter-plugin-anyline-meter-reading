@@ -38,21 +38,12 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
     
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		do {
-			try self.meterScanViewPlugin?.stop()
-			try self.meterScanViewPlugin?.start()
-		} catch {
-			handleError(error: error)
-		}
+		startAnylineScanning()
 	}
 	
     override func viewDidDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        do {
-            try self.meterScanViewPlugin?.stop()
-        } catch {
-            handleError(error: error)
-        }
+        stopAnylineScanning()
     }
     
     // MARK: - Public
@@ -96,14 +87,31 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
                 self.scanView = ALScanView.init(frame: self.view.bounds, scanViewPlugin: self.meterScanViewPlugin)
                 self.view.addSubview(self.scanView)
                 self.addOkButton()
+				self.startAnylineScanning()
                 self.scanView.startCamera()
-				try self.meterScanViewPlugin.start()
             } catch {
                 self.handleError(error: error)
             }
         }
     }
     
+	private func startAnylineScanning() {
+		do {
+			try self.meterScanViewPlugin?.stop()
+			try self.meterScanViewPlugin?.start()
+		} catch {
+			handleError(error: error)
+		}
+	}
+	
+	private func stopAnylineScanning() {
+		do {
+            try self.meterScanViewPlugin?.stop()
+        } catch {
+            handleError(error: error)
+        }
+	}
+	
     private func addOkButton() {
         let okButton = UIButton(frame: CGRect(x: 0, y: view.bounds.height - 400, width: view.bounds.width, height: 400))
         okButton.backgroundColor = UIColor.clear
