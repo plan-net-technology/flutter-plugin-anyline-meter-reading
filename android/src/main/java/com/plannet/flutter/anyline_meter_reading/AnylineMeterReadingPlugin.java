@@ -3,6 +3,9 @@ package com.plannet.flutter.anyline_meter_reading;
 import android.app.Activity;
 import android.content.Intent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -51,7 +54,10 @@ public class AnylineMeterReadingPlugin implements MethodCallHandler, PluginRegis
   public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == Constants.SCAN_ACTIVITY_REQUEST_CODE) {
       if (resultCode == Constants.RESULT_SUCCESS) {
-        result.success(data.getStringExtra(Constants.KEY_METER_VALUE));
+        final List<String> results = new ArrayList<>();
+        results.add(data.getStringExtra(Constants.KEY_METER_VALUE));
+        results.add(data.getStringExtra(Constants.KEY_METER_CUTOUT_IMAGE));
+        result.success(results);
         return true;
       } else if (resultCode == Constants.RESULT_EXCEPTION_DEFAULT) {
         result.error(String.valueOf(Constants.RESULT_EXCEPTION_DEFAULT), data.getStringExtra(Constants.KEY_EXCEPTION), null);

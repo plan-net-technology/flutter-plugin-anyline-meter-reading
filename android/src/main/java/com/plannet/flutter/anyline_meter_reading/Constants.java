@@ -6,6 +6,8 @@ public class Constants {
 
     static final String KEY_LICENSE_KEY = "KEY_LICENSE_KEY";
     static final String KEY_METER_VALUE = "KEY_METER_VALUE";
+    static final String KEY_METER_CUTOUT_IMAGE = "KEY_METER_CONTROL_IMAGE";
+
     static final String KEY_EXCEPTION = "KEY_EXCEPTION";
 
     static final int RESULT_SUCCESS = 100;
