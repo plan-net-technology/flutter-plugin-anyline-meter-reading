@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'dart:developer';
+
 
 import 'constants.dart';
 import 'exceptions.dart';
 import 'exceptions_parser.dart';
 
 class AnylineMeterReading {
-  static const _channel = const MethodChannel('anyline_meter_reading');
+  static const MethodChannel _channel = const MethodChannel('anyline_meter_reading');
 
   static Future<AnylineMeterReading> createInstance(String licenseKey) async {
     final AnylineMeterReading anylineMeterReading = AnylineMeterReading._internal();
@@ -18,19 +18,14 @@ class AnylineMeterReading {
 
   AnylineMeterReading._internal();
 
-  List<dynamic> meterValue = <dynamic>[];
-
-  Future<List<dynamic>> getMeterValue({AnylineMeterReadingExceptionParserType anylineMeterReadingExceptionParser}) async {
+  Future<List> getMeterValue({AnylineMeterReadingExceptionParserType anylineMeterReadingExceptionParser}) async {
     try {
-      meterValue = await _channel.invokeMethod(Constants.METHOD_GET_METER_VALUE);
-      log(meterValue[0]);
-      log(meterValue[1]);
+      final List<dynamic> meterValue = await _channel.invokeMethod(Constants.METHOD_GET_METER_VALUE);
       return meterValue;
     } catch (exception) {
       throw _parseException(exception);
     }
   }
-
 
   _setLicenseKey(String licenseKey) async {
     final Map<String, String> arguments = { Constants.KEY_LICENSE_KEY: licenseKey };
