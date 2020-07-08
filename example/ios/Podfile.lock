@@ -1,13 +1,13 @@
 PODS:
-  - Anyline (7)
+  - Anyline (10)
   - anyline_meter_reading (0.0.1):
-    - Anyline (= 7)
+    - Anyline (= 10)
     - Flutter
   - Flutter (1.0.0)
 
 DEPENDENCIES:
   - anyline_meter_reading (from `.symlinks/plugins/anyline_meter_reading/ios`)
-  - Flutter (from `.symlinks/flutter/ios`)
+  - Flutter (from `Flutter`)
 
 SPEC REPOS:
   trunk:
@@ -17,13 +17,13 @@ EXTERNAL SOURCES:
   anyline_meter_reading:
     :path: ".symlinks/plugins/anyline_meter_reading/ios"
   Flutter:
-    :path: ".symlinks/flutter/ios"
+    :path: Flutter
 
 SPEC CHECKSUMS:
-  Anyline: b203525476d1f803a0e639da3bc82b1660894acc
-  anyline_meter_reading: 171b938374c76b7a82dcbd1ed9f1e3b6b6bf2402
+  Anyline: b2ee36ffa53e787938e460671a2ae75669aeacca
+  anyline_meter_reading: a035cc4b8d970ab0f6b048dd4f49a75986394d0a
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
 
-PODFILE CHECKSUM: b6a0a141693093b304368d08511b46cf3d1d0ac5
+PODFILE CHECKSUM: c34e2287a9ccaa606aeceab922830efb9a6ff69a
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3

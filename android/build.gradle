@@ -28,7 +28,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
@@ -39,7 +39,8 @@ android {
         targetCompatibility = 1.8
     }
     dependencies {
-        api 'io.anyline:anylinesdk:14@aar'
+        api 'io.anyline:anylinesdk:21@aar'
+        implementation 'com.google.android.material:material:1.1.0-alpha01'
     }
 }
 
