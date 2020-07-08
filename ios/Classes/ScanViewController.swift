@@ -49,7 +49,7 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
     // MARK: - Public
     
     func anylineMeterScanPlugin(_ anylineMeterScanPlugin: ALMeterScanPlugin, didFind scanResult: ALMeterResult) {
-        handleScanResult(meterValue: String(scanResult.result))
+        handleScanResult(meterValue: String(scanResult.result), cutoutImage: scanResult.image)
     }
     
     // MARK: - Private
@@ -128,12 +128,29 @@ class ScanViewController: UIViewController, ALMeterScanPluginDelegate {
         }
     }
     
-    @objc private func handleScanResult(meterValue: String) {
+    @objc private func handleScanResult(meterValue: String, cutoutImage: UIImage) {
         dismiss(animated: true) {
-            self.result(meterValue)
+            let imagePath = self.saveImage(image: cutoutImage, imageName: UUID().uuidString + ".png")
+            self.result([meterValue, imagePath])
         }
     }
-    
+
+    func saveImage(image: UIImage, imageName: String) -> String {
+        if let imageData = UIImagePNGRepresentation(image) {
+            do {
+                let documentsPath = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+                let filePath = documentsPath.appendingPathComponent(imageName)
+                try imageData.write(to: filePath)
+                return filePath.path
+            } catch let error {
+                print("\(imageName) not saved: \(error)")
+            }
+        } else {
+            print("Could not convert UIImage to png data")
+        }
+        return "";
+    }
+
     private func handleError(error: Error) {
         dismiss(animated: true) {
             self.result(FlutterError(code: Constants.RESULT_EXCEPTION_DEFAULT, message: error.localizedDescription, details: nil))

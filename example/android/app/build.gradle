@@ -33,6 +33,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+
         applicationId "com.plannet.flutter.anyline_meter_reading_example"
         minSdkVersion 21
         targetSdkVersion 28

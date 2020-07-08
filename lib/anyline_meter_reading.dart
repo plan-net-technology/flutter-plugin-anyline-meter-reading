@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+
 import 'constants.dart';
 import 'exceptions.dart';
 import 'exceptions_parser.dart';
@@ -17,9 +18,9 @@ class AnylineMeterReading {
 
   AnylineMeterReading._internal();
 
-  Future<String> getMeterValue({AnylineMeterReadingExceptionParserType anylineMeterReadingExceptionParser}) async {
+  Future<List> getMeterValue({AnylineMeterReadingExceptionParserType anylineMeterReadingExceptionParser}) async {
     try {
-      final String meterValue = await _channel.invokeMethod(Constants.METHOD_GET_METER_VALUE);
+      final List<dynamic> meterValue = await _channel.invokeMethod(Constants.METHOD_GET_METER_VALUE);
       return meterValue;
     } catch (exception) {
       throw _parseException(exception);

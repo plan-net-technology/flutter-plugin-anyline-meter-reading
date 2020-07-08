@@ -3,12 +3,18 @@ package com.plannet.flutter.anyline_meter_reading;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import androidx.annotation.NonNull;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.camera.CameraOpenListener;
@@ -113,11 +119,32 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
     }
 
     private void handleScanResult(MeterScanResult meterScanResult) {
+        File cacheDir = getBaseContext().getCacheDir();
+        String fileName = "cutoutImage" + "_"  + System.currentTimeMillis();
+        File cachedImage = new File(cacheDir,  fileName);
+        Bitmap cutoutImage = meterScanResult.getCutoutImage().getBitmap();
+        try {
+            FileOutputStream out = new FileOutputStream(cachedImage);
+            cutoutImage.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    100, out);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        cutoutImage.recycle();
+
+        Intent i = new Intent();
+        i.putExtra(Constants.KEY_METER_VALUE, meterScanResult.getResult());
+        i.putExtra(Constants.KEY_METER_CUTOUT_IMAGE, fileName);
+
         setResult(
-                Constants.RESULT_SUCCESS,
-                new Intent().putExtra(
-                        Constants.KEY_METER_VALUE, meterScanResult.getResult()
-                )
+                Constants.RESULT_SUCCESS, i
         );
         finish();
     }
