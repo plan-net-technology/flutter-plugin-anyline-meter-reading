@@ -1,73 +1,56 @@
-package com.plannet.flutter.anyline_meter_reading;
+/*
+ * *
+ *  * Created by Gabriel Dusa on 6/30/20 11:11 AM
+ *  * Copyright (c) 2020 Plan.net Technology . All rights reserved.
+ *  * Last modified 6/30/20 11:11 AM
+ *
+ */
 
-import android.app.Activity;
-import android.content.Intent;
+package com.plannet.ewi;
 
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
-/** AnylineMeterReadingPlugin */
-public class AnylineMeterReadingPlugin implements MethodCallHandler, PluginRegistry.ActivityResultListener {
-  private final Activity activity;
-  private MethodChannel.Result result;
-  private String licenseKey;
+import com.adobe.marketing.mobile.*;
+import com.plannet.ewi.*;
 
-  /**
-   * Plugin registration.
-   */
-  public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "anyline_meter_reading");
-    final AnylineMeterReadingPlugin instance = new AnylineMeterReadingPlugin(registrar.activity());
-    registrar.addActivityResultListener(instance);
-    channel.setMethodCallHandler(instance);
-  }
+public class AdobeAnalyticsManager {
+  final static int sharedPreferencesMode = Context.MODE_PRIVATE;
+  final  static String sharedPreferencesName = "FlutterSharedPreferences";
+  static final String kTrackingEnabledStatus = "flutter.KEY_TRACKING_STATUS"; // we need 'flutter.' as this is how the Flutter
+  // plugin shared_preferences prefixes the keys
+  static final String TAG = "AdobeAnalyticsManager";
 
-  private AnylineMeterReadingPlugin(Activity activity) {
-    this.activity = activity;
-  }
-
-  @Override
-  public void onMethodCall(MethodCall call, Result result) {
-    this.result = result;
-    switch (call.method) {
-      case Constants.METHOD_SET_LICENSE_KEY:
-        this.licenseKey = call.argument(Constants.KEY_LICENSE_KEY);
-        result.success("");
-        break;
-      case Constants.METHOD_GET_METER_VALUE:
-        startScanActivity(activity);
-        break;
-      default:
-        result.notImplemented();
-        break;
+  static public void setupAnalytics(Application application) {
+    MobileCore.setApplication(application);
+    MobileCore.configureWithAppID(BuildConfig.ADOBE_ANALYTICS_APP_ID);
+    try {
+      Analytics.registerExtension(); //Register Analytics with Mobile Core
+      Identity.registerExtension();
+      MobileCore.setWrapperType(WrapperType.FLUTTER);
+      MobileCore.start(null);
+      Lifecycle.registerExtension();
+    } catch (Exception e) {
+      android.util.Log.e(TAG, "setupAnalytics: " + "exception: " + e.toString());
     }
   }
 
-  @Override
-  public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == Constants.SCAN_ACTIVITY_REQUEST_CODE) {
-      if (resultCode == Constants.RESULT_SUCCESS) {
-        result.success(data.getStringExtra(Constants.KEY_METER_VALUE));
-        return true;
-      } else if (resultCode == Constants.RESULT_EXCEPTION_DEFAULT) {
-        result.error(String.valueOf(Constants.RESULT_EXCEPTION_DEFAULT), data.getStringExtra(Constants.KEY_EXCEPTION), null);
-        return true;
-      } else if (resultCode == Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION) {
-        result.error(String.valueOf(Constants.RESULT_EXCEPTION_NO_CAMERA_PERMISSION), null, null);
-        return true;
-      }
+  static public void lifecycleStart(Application application) {
+    if (isTrackingEnabled(application)) {
+      MobileCore.setApplication(application);
+      MobileCore.lifecycleStart(null);
     }
-    return false;
   }
 
-  private void startScanActivity(Activity activity) {
-    Intent i = new Intent(activity, ScanActivity.class);
-    i.putExtra(Constants.KEY_LICENSE_KEY, licenseKey);
-    activity.startActivityForResult(i, Constants.SCAN_ACTIVITY_REQUEST_CODE);
+  static public void lifecyclePause(Application application) {
+    if (isTrackingEnabled(application)) {
+      MobileCore.lifecyclePause();
+    }
   }
 
+  static private boolean isTrackingEnabled(Application application) {
+    final SharedPreferences sharedPreferences = application.getSharedPreferences(sharedPreferencesName, sharedPreferencesMode);
+    return sharedPreferences.getBoolean(kTrackingEnabledStatus, false);
+  }
 }
