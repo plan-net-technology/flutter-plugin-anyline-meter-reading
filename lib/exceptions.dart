@@ -1,11 +1,11 @@
 class AnylineMeterReadingException implements Exception {
-  final String _message;
+  final String? _message;
 
-  AnylineMeterReadingException({String message}):
+  AnylineMeterReadingException({String? message}):
         this._message = message;
 
   String toString() {
-    return _message == null ? "" : _message;
+    return _message == null ? "" : _message!;
   }
 }
 
