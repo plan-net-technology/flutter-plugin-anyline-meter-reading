@@ -17,12 +17,12 @@ class AnylineMeterReading {
 
   AnylineMeterReading._internal();
 
-  Future<String> getMeterValue({AnylineMeterReadingExceptionParserType anylineMeterReadingExceptionParser}) async {
+  Future<String?> getMeterValue({AnylineMeterReadingExceptionParserType? anylineMeterReadingExceptionParser}) async {
     try {
-      final String meterValue = await _channel.invokeMethod(Constants.METHOD_GET_METER_VALUE);
+      final String? meterValue = await _channel.invokeMethod(Constants.METHOD_GET_METER_VALUE);
       return meterValue;
     } catch (exception) {
-      throw _parseException(exception);
+      throw _parseException(exception as Exception);
     }
   }
 
@@ -31,11 +31,11 @@ class AnylineMeterReading {
     try {
       return await _channel.invokeMethod(Constants.METHOD_SET_LICENSE_KEY, arguments);
     } catch (exception) {
-      throw _parseException(exception);
+      throw _parseException(exception as Exception);
     }
   }
 
-  AnylineMeterReadingException _parseException(Exception exception, {AnylineMeterReadingExceptionParserType anylineMeterReadingExceptionParser}) {
+  AnylineMeterReadingException _parseException(Exception exception, {AnylineMeterReadingExceptionParserType? anylineMeterReadingExceptionParser}) {
     return (anylineMeterReadingExceptionParser ?? AnylineMeterReadingExceptionParser()).parseException(exception);
   }
 }
