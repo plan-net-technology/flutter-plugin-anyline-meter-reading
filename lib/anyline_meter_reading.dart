@@ -9,7 +9,7 @@ import 'exceptions_parser.dart';
 class AnylineMeterReading {
   static const MethodChannel _channel = const MethodChannel('anyline_meter_reading');
 
-  static Future<AnylineMeterReading> createInstance() async {
+  static AnylineMeterReading createInstance() {
     final AnylineMeterReading anylineMeterReading = AnylineMeterReading._internal();
     return anylineMeterReading;
   }
