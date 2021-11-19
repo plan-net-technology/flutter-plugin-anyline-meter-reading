@@ -10,9 +10,9 @@ abstract class AnylineMeterReadingExceptionParserType {
 class AnylineMeterReadingExceptionParser implements AnylineMeterReadingExceptionParserType {
   AnylineMeterReadingException parseException(Exception exception) {
     if (exception is PlatformException) {
-      if (exception.code == Constants.EXCEPTION_DEFAULT) {
+      if (exception.code == Constants.exceptionDefault) {
         return AnylineMeterReadingException(message: exception.message);
-      } else if (exception.code == Constants.EXCEPTION_NO_CAMERA_PERMISSION) {
+      } else if (exception.code == Constants.exceptionNoCameraPermission) {
         return AnylineMeterReadingNoCameraPermissionException();
       }
     }

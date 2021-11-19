@@ -10,8 +10,10 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
-import at.nineyards.anyline.camera.CameraController;
-import at.nineyards.anyline.camera.CameraOpenListener;
+import at.nineyards.anyline.core.LicenseException;
+import io.anyline.AnylineSDK;
+import io.anyline.camera.CameraController;
+import io.anyline.camera.CameraOpenListener;
 import io.anyline.plugin.ScanResultListener;
 import io.anyline.plugin.meter.MeterScanMode;
 import io.anyline.plugin.meter.MeterScanResult;
@@ -33,7 +35,11 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, cameraPermissionRequestCode);
         } else {
-            setupScanView();
+            try {
+                setupScanView();
+            } catch (LicenseException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -42,7 +48,11 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == cameraPermissionRequestCode) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                setupScanView();
+                try {
+                    setupScanView();
+                } catch (LicenseException e) {
+                    e.printStackTrace();
+                }
             } else {
                 handleCameraPermissionError();
             }
@@ -93,14 +103,14 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
         }
     }
 
-    private void setupScanView() {
+    private void setupScanView() throws LicenseException {
         setContentView(R.layout.activity_scan);
-
+        AnylineSDK.init(licenseKey, getApplicationContext());
         scanView = findViewById(R.id.scan_view);
         scanView.setCameraOpenListener(this);
 
         ScanViewPluginConfig scanViewPluginConfig = new ScanViewPluginConfig(getApplicationContext(), Constants.CONFIG_FILE_NAME);
-        MeterScanViewPlugin scanViewPlugin = new MeterScanViewPlugin(getApplicationContext(), licenseKey, scanViewPluginConfig, "METER");
+        MeterScanViewPlugin scanViewPlugin = new MeterScanViewPlugin(getApplicationContext(), scanViewPluginConfig, "METER");
         BaseScanViewConfig baseScanViewConfig = new BaseScanViewConfig(getApplicationContext(), Constants.CONFIG_FILE_NAME);
         scanView.setScanViewConfig(baseScanViewConfig);
         scanView.setScanViewPlugin(scanViewPlugin);
