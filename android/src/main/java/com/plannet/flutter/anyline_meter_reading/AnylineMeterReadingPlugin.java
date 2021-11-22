@@ -3,48 +3,37 @@ package com.plannet.flutter.anyline_meter_reading;
 import android.app.Activity;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
+
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.PluginRegistry.ActivityResultListener;
 import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** AnylineMeterReadingPlugin */
-public class AnylineMeterReadingPlugin implements MethodCallHandler, PluginRegistry.ActivityResultListener {
-  private final Activity activity;
+public class AnylineMeterReadingPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
+  /// The MethodChannel that will the communication between Flutter and native Android
+  ///
+  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+  /// when the Flutter Engine is detached from the Activity
+  private MethodChannel channel;
+  private ActivityPluginBinding pluginBinding;
+  private Activity activity;
+
   private MethodChannel.Result result;
   private String licenseKey;
 
-  /**
-   * Plugin registration.
-   */
-  public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "anyline_meter_reading");
-    final AnylineMeterReadingPlugin instance = new AnylineMeterReadingPlugin(registrar.activity());
-    registrar.addActivityResultListener(instance);
-    channel.setMethodCallHandler(instance);
-  }
-
-  private AnylineMeterReadingPlugin(Activity activity) {
-    this.activity = activity;
-  }
-
-  @Override
-  public void onMethodCall(MethodCall call, Result result) {
-    this.result = result;
-    switch (call.method) {
-      case Constants.METHOD_SET_LICENSE_KEY:
-        this.licenseKey = call.argument(Constants.KEY_LICENSE_KEY);
-        result.success("");
-        break;
-      case Constants.METHOD_GET_METER_VALUE:
-        startScanActivity(activity);
-        break;
-      default:
-        result.notImplemented();
-        break;
-    }
+  private void startScanActivity(Activity activity) {
+    Intent i = new Intent(activity, ScanActivity.class);
+    i.putExtra(Constants.KEY_LICENSE_KEY, licenseKey);
+    activity.startActivityForResult(i, Constants.SCAN_ACTIVITY_REQUEST_CODE);
   }
 
   @Override
@@ -64,10 +53,58 @@ public class AnylineMeterReadingPlugin implements MethodCallHandler, PluginRegis
     return false;
   }
 
-  private void startScanActivity(Activity activity) {
-    Intent i = new Intent(activity, ScanActivity.class);
-    i.putExtra(Constants.KEY_LICENSE_KEY, licenseKey);
-    activity.startActivityForResult(i, Constants.SCAN_ACTIVITY_REQUEST_CODE);
+ //V2 Engine
+  @Override
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "anyline_meter_reading");
+    channel.setMethodCallHandler(this);
   }
 
+  @Override
+  public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+    this.result = result;
+    switch (call.method) {
+      case Constants.METHOD_SET_LICENSE_KEY:
+        this.licenseKey = call.argument(Constants.KEY_LICENSE_KEY);
+        result.success("");
+        break;
+      case Constants.METHOD_GET_METER_VALUE:
+        startScanActivity(activity);
+        break;
+      default:
+        result.notImplemented();
+        break;
+    }
+  }
+
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    channel.setMethodCallHandler(null);
+  }
+
+  // --- ActivityAware
+
+  @Override
+  public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+    activity = binding.getActivity();
+    pluginBinding = binding;
+    pluginBinding.addActivityResultListener(this);
+  }
+
+  @Override
+  public void onDetachedFromActivityForConfigChanges() {
+    onDetachedFromActivity();
+  }
+
+  @Override
+  public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+    onAttachedToActivity(binding);
+  }
+
+  @Override
+  public void onDetachedFromActivity() {
+    activity = null;
+    pluginBinding.removeActivityResultListener(this);
+    pluginBinding = null;
+  }
 }
