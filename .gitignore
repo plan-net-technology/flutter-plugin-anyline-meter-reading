@@ -106,3 +106,4 @@ coverage/
 **/ios/Flutter/Flutter.podspec
 !/ios/Podfile.lock
 .last_build_id
+pubspec.lock
