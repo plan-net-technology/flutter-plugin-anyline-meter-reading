@@ -38,7 +38,12 @@ class AnylineMeterReading {
         final bool sdkInitialized = await _channel.invokeMethod(Constants.methodInitAnyline, arguments);
         return sdkInitialized;
       } catch (exception) {
-        throw _parseException(exception as Exception);
+        final parsedException = _parseException(exception as Exception);
+        if (parsedException is AnylineFailedToInitializeSDKException) {
+          return false;
+        } else {
+          throw parsedException;
+        }
       }
     }
   }
