@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/services.dart';
 
@@ -35,7 +36,11 @@ class AnylineMeterReading {
         final Map<String, String> arguments = {
           Constants.keyLicenseKey: license
         };
-        final bool sdkInitialized = await _channel.invokeMethod(Constants.methodInitAnyline, arguments);
+        bool sdkInitialized = await _channel.invokeMethod(Constants.methodInitAnyline, arguments);
+        PlatformDispatcher.instance.onError = (error, stack) {
+          sdkInitialized = false;
+          return true;
+        };
         return sdkInitialized;
       } catch (exception) {
         final parsedException = _parseException(exception as Exception);
