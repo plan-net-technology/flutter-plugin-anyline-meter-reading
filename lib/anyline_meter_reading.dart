@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 
@@ -23,6 +24,22 @@ class AnylineMeterReading {
       return meterValue;
     } catch (exception) {
       throw _parseException(exception as Exception);
+    }
+  }
+
+  Future<bool> isSupported(String license, {AnylineMeterReadingExceptionParserType? anylineMeterReadingExceptionParser}) async {
+    if (Platform.isIOS) {
+      return true;
+    } else {
+      try {
+        final Map<String, String> arguments = {
+          Constants.keyLicenseKey: license
+        };
+        final bool sdkInitialized = await _channel.invokeMethod(Constants.methodInitAnyline, arguments);
+        return sdkInitialized;
+      } catch (exception) {
+        throw _parseException(exception as Exception);
+      }
     }
   }
 

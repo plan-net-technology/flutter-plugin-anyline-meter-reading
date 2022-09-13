@@ -23,23 +23,15 @@ import io.anyline.view.ScanView;
 import io.anyline.view.ScanViewPluginConfig;
 
 public class ScanActivity extends AppCompatActivity implements CameraOpenListener {
-    private String licenseKey;
     protected ScanView scanView;
     private static final int cameraPermissionRequestCode = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        extractLicenseKey();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, cameraPermissionRequestCode);
-        } else {
-            try {
-                setupScanView();
-            } catch (LicenseException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -48,11 +40,7 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == cameraPermissionRequestCode) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    setupScanView();
-                } catch (LicenseException e) {
-                    e.printStackTrace();
-                }
+                setupScanView();
             } else {
                 handleCameraPermissionError();
             }
@@ -96,16 +84,8 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
         handleDefaultError(e);
     }
 
-    private void extractLicenseKey() {
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            licenseKey = extras.getString(Constants.KEY_LICENSE_KEY);
-        }
-    }
-
-    private void setupScanView() throws LicenseException {
+    private void setupScanView() {
         setContentView(R.layout.activity_scan);
-        AnylineSDK.init(licenseKey, getApplicationContext());
         scanView = findViewById(R.id.scan_view);
         scanView.setCameraOpenListener(this);
 
