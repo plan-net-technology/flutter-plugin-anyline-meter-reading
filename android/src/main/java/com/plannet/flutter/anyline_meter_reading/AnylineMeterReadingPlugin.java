@@ -67,28 +67,34 @@ public class AnylineMeterReadingPlugin implements FlutterPlugin, MethodCallHandl
       this.result = result;
       switch (call.method) {
           case Constants.METHOD_SET_LICENSE_KEY:
-              this.licenseKey = call.argument(Constants.KEY_LICENSE_KEY);
-              result.success("");
+              setLicenseKey(call);
               break;
           case Constants.METHOD_GET_METER_VALUE:
-              try {
-                  AnylineSDK.init(licenseKey, activity.getApplicationContext());
-                  startScanActivity(activity);
-              } catch (Exception e) {
-                  if (e instanceof LicenseException) {
-                      result.error(String.valueOf(Constants.RESULT_EXCEPTION_LICENSE_EXPIRED), null, null);
-                  } else {
-                      result.error(String.valueOf(Constants.RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE), null, null);
-                  }
-                  e.printStackTrace();
-              } catch (Throwable error) {
-                  error.printStackTrace();
-                  result.error(String.valueOf(Constants.RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE), null, null);
-              }
+              getMeterReadingValue();
               break;
           default:
               result.notImplemented();
               break;
+      }
+  }
+
+  private void setLicenseKey(@NonNull MethodCall call) {
+      this.licenseKey = call.argument(Constants.KEY_LICENSE_KEY);
+      result.success("");
+  }
+
+  private void getMeterReadingValue() {
+      try {
+          AnylineSDK.init(licenseKey, activity.getApplicationContext());
+          startScanActivity(activity);
+      } catch (Exception e) {
+          if (e instanceof LicenseException) {
+              result.error(String.valueOf(Constants.RESULT_EXCEPTION_LICENSE_EXPIRED), null, null);
+          } else {
+              result.error(String.valueOf(Constants.RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE), null, null);
+          }
+      } catch (Throwable error) {
+          result.error(String.valueOf(Constants.RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE), null, null);
       }
   }
 

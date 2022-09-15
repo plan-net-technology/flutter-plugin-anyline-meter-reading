@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:ui';
+import 'dart:developer';
 
 import 'package:flutter/services.dart';
 
@@ -33,6 +32,7 @@ class AnylineMeterReading {
     try {
       return await _channel.invokeMethod(Constants.methodSetLicenseKey, arguments);
     } catch (exception) {
+      log('Failed to get the meter reading', error: exception);
       throw _parseException(exception as Exception);
     }
   }
