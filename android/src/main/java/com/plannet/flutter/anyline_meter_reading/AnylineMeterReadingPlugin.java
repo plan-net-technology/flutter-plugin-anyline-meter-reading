@@ -81,8 +81,8 @@ public class AnylineMeterReadingPlugin implements FlutterPlugin, MethodCallHandl
                       result.error(String.valueOf(Constants.RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE), null, null);
                   }
                   e.printStackTrace();
-              } catch (UnsatisfiedLinkError unsatisfiedLinkError) {
-                  unsatisfiedLinkError.printStackTrace();
+              } catch (Throwable error) {
+                  error.printStackTrace();
                   result.error(String.valueOf(Constants.RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE), null, null);
               }
               break;
