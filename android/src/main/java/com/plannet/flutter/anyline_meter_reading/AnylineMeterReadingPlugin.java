@@ -71,13 +71,9 @@ public class AnylineMeterReadingPlugin implements FlutterPlugin, MethodCallHandl
               result.success("");
               break;
           case Constants.METHOD_GET_METER_VALUE:
-              startScanActivity(activity);
-              break;
-          case Constants.METHOD_INIT_ANYLINE:
-              this.licenseKey = call.argument(Constants.KEY_LICENSE_KEY);
               try {
                   AnylineSDK.init(licenseKey, activity.getApplicationContext());
-                  result.success(true);
+                  startScanActivity(activity);
               } catch (Exception e) {
                   if (e instanceof LicenseException) {
                       result.error(String.valueOf(Constants.RESULT_EXCEPTION_LICENSE_EXPIRED), null, null);
@@ -85,6 +81,9 @@ public class AnylineMeterReadingPlugin implements FlutterPlugin, MethodCallHandl
                       result.error(String.valueOf(Constants.RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE), null, null);
                   }
                   e.printStackTrace();
+              } catch (UnsatisfiedLinkError unsatisfiedLinkError) {
+                  unsatisfiedLinkError.printStackTrace();
+                  result.error(String.valueOf(Constants.RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE), null, null);
               }
               break;
           default:

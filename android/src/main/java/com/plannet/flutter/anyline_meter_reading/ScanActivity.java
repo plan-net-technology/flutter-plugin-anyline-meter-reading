@@ -87,6 +87,9 @@ public class ScanActivity extends AppCompatActivity implements CameraOpenListene
     }
 
     private void setupScanView() {
+
+
+
         setContentView(R.layout.activity_scan);
         scanView = findViewById(R.id.scan_view);
         scanView.setCameraOpenListener(this);

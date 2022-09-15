@@ -28,31 +28,6 @@ class AnylineMeterReading {
     }
   }
 
-  Future<bool> isSupported(String license, {AnylineMeterReadingExceptionParserType? anylineMeterReadingExceptionParser}) async {
-    if (Platform.isIOS) {
-      return true;
-    } else {
-      try {
-        final Map<String, String> arguments = {
-          Constants.keyLicenseKey: license
-        };
-        bool sdkInitialized = await _channel.invokeMethod(Constants.methodInitAnyline, arguments);
-        PlatformDispatcher.instance.onError = (error, stack) {
-          sdkInitialized = false;
-          return true;
-        };
-        return sdkInitialized;
-      } catch (exception) {
-        final parsedException = _parseException(exception as Exception);
-        if (parsedException is AnylineFailedToInitializeSDKException) {
-          return false;
-        } else {
-          throw parsedException;
-        }
-      }
-    }
-  }
-
   _setLicenseKey(String licenseKey) async {
     final Map<String, String> arguments = { Constants.keyLicenseKey: licenseKey };
     try {
