@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
+import at.nineyards.anyline.core.LicenseException;
+import io.anyline.AnylineSDK;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
@@ -62,19 +64,38 @@ public class AnylineMeterReadingPlugin implements FlutterPlugin, MethodCallHandl
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    this.result = result;
-    switch (call.method) {
-      case Constants.METHOD_SET_LICENSE_KEY:
-        this.licenseKey = call.argument(Constants.KEY_LICENSE_KEY);
-        result.success("");
-        break;
-      case Constants.METHOD_GET_METER_VALUE:
-        startScanActivity(activity);
-        break;
-      default:
-        result.notImplemented();
-        break;
-    }
+      this.result = result;
+      switch (call.method) {
+          case Constants.METHOD_SET_LICENSE_KEY:
+              setLicenseKey(call);
+              break;
+          case Constants.METHOD_GET_METER_VALUE:
+              getMeterReadingValue();
+              break;
+          default:
+              result.notImplemented();
+              break;
+      }
+  }
+
+  private void setLicenseKey(@NonNull MethodCall call) {
+      this.licenseKey = call.argument(Constants.KEY_LICENSE_KEY);
+      result.success("");
+  }
+
+  private void getMeterReadingValue() {
+      try {
+          AnylineSDK.init(licenseKey, activity.getApplicationContext());
+          startScanActivity(activity);
+      } catch (Exception e) {
+          if (e instanceof LicenseException) {
+              result.error(String.valueOf(Constants.RESULT_EXCEPTION_LICENSE_EXPIRED), null, null);
+          } else {
+              result.error(String.valueOf(Constants.RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE), null, null);
+          }
+      } catch (Throwable error) {
+          result.error(String.valueOf(Constants.RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE), null, null);
+      }
   }
 
   @Override

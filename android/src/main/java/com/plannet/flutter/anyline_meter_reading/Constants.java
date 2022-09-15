@@ -11,6 +11,8 @@ public class Constants {
     static final int RESULT_SUCCESS = 100;
     static final int RESULT_EXCEPTION_DEFAULT = 101;
     static final int RESULT_EXCEPTION_NO_CAMERA_PERMISSION = 102;
+    static final int RESULT_EXCEPTION_LICENSE_EXPIRED = 103;
+    static final int RESULT_EXCEPTION_FAILED_TO_INIT_ANYLINE = 104;
 
     static final int SCAN_ACTIVITY_REQUEST_CODE = 10000;
 

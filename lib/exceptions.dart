@@ -10,3 +10,7 @@ class AnylineMeterReadingException implements Exception {
 }
 
 class AnylineMeterReadingNoCameraPermissionException extends AnylineMeterReadingException {}
+
+class AnylineFailedToInitializeSDKException extends AnylineMeterReadingException {}
+
+class AnylineLicenseExpiredException extends AnylineMeterReadingException {}

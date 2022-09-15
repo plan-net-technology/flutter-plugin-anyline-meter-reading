@@ -6,4 +6,6 @@ abstract class Constants {
 
   static final String exceptionDefault = "101";
   static final String exceptionNoCameraPermission = "102";
+  static final String exceptionLicenseExpired = "103";
+  static final String exceptionFailedToInitAnyline = "104";
 }

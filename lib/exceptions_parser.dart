@@ -14,6 +14,10 @@ class AnylineMeterReadingExceptionParser implements AnylineMeterReadingException
         return AnylineMeterReadingException(message: exception.message);
       } else if (exception.code == Constants.exceptionNoCameraPermission) {
         return AnylineMeterReadingNoCameraPermissionException();
+      } else if (exception.code == Constants.exceptionFailedToInitAnyline) {
+        return AnylineFailedToInitializeSDKException();
+      } else if (exception.code == Constants.exceptionLicenseExpired) {
+        return AnylineLicenseExpiredException();
       }
     }
     return AnylineMeterReadingException();
