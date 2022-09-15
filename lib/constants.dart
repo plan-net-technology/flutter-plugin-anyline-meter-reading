@@ -1,5 +1,4 @@
 abstract class Constants {
-  static final String methodInitAnyline = "METHOD_INIT_ANYLINE";
   static final String methodSetLicenseKey = "METHOD_SET_LICENSE_KEY";
   static final String methodGetMeterValue = "METHOD_GET_METER_VALUE";
 

@@ -3,7 +3,6 @@ package com.plannet.flutter.anyline_meter_reading;
 public class Constants {
     static final String METHOD_SET_LICENSE_KEY = "METHOD_SET_LICENSE_KEY";
     static final String METHOD_GET_METER_VALUE = "METHOD_GET_METER_VALUE";
-    static final String METHOD_INIT_ANYLINE = "METHOD_INIT_ANYLINE";
 
     static final String KEY_LICENSE_KEY = "KEY_LICENSE_KEY";
     static final String KEY_METER_VALUE = "KEY_METER_VALUE";
