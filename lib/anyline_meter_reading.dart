@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
 
 import 'constants.dart';
@@ -15,6 +17,24 @@ class AnylineMeterReading {
   }
 
   AnylineMeterReading._internal();
+
+  Future<bool> isSupported() async {
+    if (Platform.isIOS) {
+      return true;
+    }
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    final deviceSupportedAbis = androidInfo.supportedAbis;
+    if (deviceSupportedAbis.isEmpty) {
+      return false;
+    }
+    for (String? abi in deviceSupportedAbis) {
+      if (abi != null && Constants.anylineSupportedAbisList.contains(abi)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   Future<String> getMeterValue(String license, {AnylineMeterReadingExceptionParserType? anylineMeterReadingExceptionParser}) async {
     try {
