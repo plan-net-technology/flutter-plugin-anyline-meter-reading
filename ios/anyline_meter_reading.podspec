@@ -15,7 +15,7 @@ A new Flutter plugin.
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'Anyline', '25'
+  s.dependency 'Anyline', '42.0.0'
   s.static_framework = true
 
   s.ios.deployment_target = '10.0'
